@@ -1888,3 +1888,923 @@ Next:::
 		- s3 
 		
 		- mlflow 
+
+
+
+		
+#######################
+Day 6 | 13th Sep. 2026
+#######################	
+
+
+	MLOps Tools :::
+	
+		AWS :::
+		
+			- Create AWS Account - Free Tier Account
+			
+				As a root user -->	 
+				
+					
+			
+			- IAM Service --> Create IAM User - IAM Roles
+			
+				- Identify and Access Management Service :::
+					
+					- Authentication 
+						==>	Who can access ?
+						
+					- Authorization
+						==> What sort of action be perform 
+						
+						
+				- RBAC - Role Based Access Control 
+				
+				
+				- Create IAM User ==> Admin Access --> Group Level Access
+				
+				- IAM Policy - Defines Permissions
+				
+				- IAM Role --> 
+				
+
+		To Do :::
+		
+			- AWS Console :::
+
+				- root user ID 
+				
+				- Password 
+				
+				- MFA 
+
+					- Login to AWS Console as a root user 
+					
+					- Create IAM User user profile with Admin Access
+					
+					
+					https://682033467551.signin.aws.amazon.com/console
+
+					skmlopsuser1
+					
+					
+					SkIAMRole1
+
+			
+					
+			- S3 Service --> S3 Buckets -> Datasets & Model Artifacts
+			
+			
+				-> Create S3 Bucket 		skmlopss3bkt1
+				
+			- AWS S3 Buckets -> To manage the ML Datasets 
+		
+	S3 Buckets :::
+	
+	
+		--> Bucket = Directory
+		
+			--> Files -> Keys/ Objects
+			
+		--> Access to Create a S3 Bucket 	
+		
+		--> Create s3 Bucket 		--> skmlopss3bkt1
+
+		Set S3 Bucket Policy :
+				
+		{
+		  "Version": "2012-10-17",
+		  "Statement": [
+			{
+			  "Sid": "Statement1",
+			  "Effect": "Allow",
+			  "Principal": "*",
+			  "Action": [
+				"s3:*"
+			  ],
+			  "Resource": "arn:aws:s3:::skmlopss3bkt1/*"
+			}
+		  ]
+		}						
+			
+			
+		
+		- EC2 Service --> Create EC2 Instance -> Dev / Build / Target Environment 
+			
+
+		- Working with EC2 Service to Launch EC2 Instances ::::
+		
+		
+		
+		Access Remote Server :::		
+		
+			Using SSH Connection:
+			
+				-> Host_Name 			# Public IP Address of VM
+				
+				-> User_Name			# ubuntu
+				
+				-> Access_Key 			- Private Key
+				
+				
+					- EC2 Direct Connection	# Thru Browser 
+					
+					
+					
+					- SSH Agent 		# Windows User
+						
+						- Putty					
+						- MobaXterm 	# On Windows Machine 
+										# https://mobaxterm.mobatek.net/download.html
+											- Choose Home Edition
+												- Installer Edition 
+			
+			
+					- Terminal 			# Mac & WIndows Users			
+			
+				- Install DVC, Python, MLFlow, Docker & Kubernetes
+				
+
+	1. ML Project Repository 		# https://github.com/Skillfyme-MLOps-2908/mlops-core-project
+	
+	
+# Create data/raw/review.csv 
+
+
+review_text,sentiment
+I love this product it works perfectly,positive
+Absolutely fantastic quality and service,positive
+Very happy with the purchase,positive
+Great experience would buy again,positive
+Excellent product highly recommended,positive
+Amazing performance and value,positive
+Satisfied with quality and delivery,positive
+Works exactly as advertised,positive
+Customer support was very helpful,positive
+This is the best purchase I have made,positive
+
+This product is okay not great not bad,neutral
+Average quality nothing special,neutral
+It works but has some issues,neutral
+Neither good nor bad experience,neutral
+Product meets basic expectations,neutral
+Decent but could be improved,neutral
+Acceptable quality for the price,neutral
+Nothing impressive but usable,neutral
+Fine for occasional use,neutral
+Okayish experience overall,neutral
+
+Worst product I have ever bought,negative
+Very disappointed with the quality,negative
+Terrible experience waste of money,negative
+Does not work as expected at all,negative
+Extremely poor build quality,negative
+Bad experience will not recommend,negative
+Product stopped working in two days,negative
+Customer service was terrible,negative
+Totally useless and overpriced,negative
+Highly dissatisfied with this product,negative
+
+I am happy with the fast delivery,positive
+Packaging was good and product works well,positive
+Average packaging but product is decent,neutral
+Late delivery and damaged box,negative
+The item arrived broken,negative
+Very smooth and reliable performance,positive
+Not worth the price paid,negative
+Okay product but slow response,neutral
+Loved the design and usability,positive
+Disappointed with the overall experience,negative	
+
+
+
+
+
+	2. Clone on Build Server 
+	
+	3. Perform Build 				(VM1)
+	
+		-> Use DVC Pipeline
+		
+			- Validate Dataset 
+			
+			- Process Dataset 
+			
+			- Train the Model 
+			
+			- Verify the Accuracy of the Model using MLFlow 
+			
+			- Update the Model Artifacts to s3 Bucket 
+			
+		-> Use Docker 
+		
+			- Create ML Application Images 
+			
+				- UI 
+				
+				- API 
+
+
+
+	DVC ::::	Data Version Control::		# https://dvc.org/  # https://doc.dvc.org/start
+	
+		==> Maintain the Version of ML Datasets.	
+
+
+		--> Install DVC ???
+		
+			- Prepare Virtual Enviroment 
+			
+				-> Install dvc/mlflow/streamlit/fast-api
+	
+	
+	Launch EC2 Instance ::: 
+	
+		- Ubuntu AMI 22.04v with IAM Role(Access s3) -> 
+
+		- Connect to EC2 Instance
+				
+				- Install :	AWS CLI, Docker Cli, git
+				
+				- Install : Python3, Python3 environment pkg
+
+
+# To Setup AWS CLI ::::				https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+
+sudo apt install -y unzip curl
+
+Download AWS CLI v2
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+Unzip installer
+
+unzip awscliv2.zip
+
+Install AWS CLI
+
+sudo ./aws/install
+
+Verify Installation
+aws --version
+
+
+Expected output:
+
+aws-cli/2.x.x Python/3.x Linux/x86_64
+
+
+AWS CLI installed successfully
+
+
+
+Create Python Enviroment::::
+
+#######################
+Day 7 | 20th Sep. 2026
+#######################	
+
+	Package ML Model ::::
+	
+		- Docker 		
+		
+		- Kubernetes 	- Open-Source 
+		
+			--> Container orchestration Tool ::
+			
+				- Micro-Services
+				
+				- ML Project 
+
+
+		- Package Application 
+		
+	Deployment :
+		
+		- What is Deployment ?	
+		
+		- Frequency of Deployment ?
+		
+			- Frequency of Deployment of ML Model ==> 
+			
+				1. Input Data Change 
+				
+				2. Change in the Algorithm
+	
+	
+	MLOps Workflow :
+	
+	
+		- DVC Pipeline 
+		
+		- ML Model CICD Pipeline 	--> Github-Actions 
+		
+		- Kubeflow ==> MLOPs 		
+
+
+
+	- ML Model :
+	
+		1. Model APIs 	(Backend service)	--> Fast-API Service 
+
+		2. UI 								--> Streamlit Tool 
+		
+		
+	- Architecture of ML Model is based on Micro-Services.
+	
+	
+		- Packaged using Container Service and Deployed using Kubernetes Service.
+		
+	
+	- Package ML Model : Container Service - Docker.
+	
+	
+	Docker :::
+	
+		- Containerization :::
+		
+			- It is a process of packaging the Application along with its' dependencies.
+		
+			
+	- Virtual Machines :::
+		
+		-> VMs are Hardware Level Virtualization 
+		-> VMs are created using Hypervisor
+		-> VMs are used to execute the Operating System. Not Application/Task
+		-> VMs will be up and running even if there is no active Application/Task
+		-> VMs consume more space and time to start the Application/Task
+	
+	
+	- Containers :::
+	
+		-> Containers are called as OS Level Virtualization 
+		-> Containers are created using Container Engine 
+		-> Containers are used to execute the Application/Task. Not Operating System
+		-> Containers will immediately goes to exit state if there is no active Application/Task
+		-> Containers consume less space and time to start the Application/Task 
+		
+			- Namespace & Control Groups --> Kernel(Core of OS)
+		
+		
+	- Setup the Container Engine :
+	
+	
+	- Use Cases :::
+	
+		- Infra-Structure Perspectives:
+		
+			-> AMI --> Server Template 
+			
+			-> ML Project: To Test ML Project ==> 150 VMs 
+			
+				Create Virtual Machine 
+				
+					- Install Container Engine 
+					
+						-> C1,2,3,4,5,6,7,8,9,................,150
+				
+					- Save Infra-Structure Cost, by reducing the no. of VMs.
+		
+		
+		- Deployment Perspectives:
+		
+			-> ML Engineers/Data Engineers :
+			
+			
+				Containerize the Model and Deploy to Target Enviroments:
+				
+					- It is a process of packaging the Application along with its' dependencies.	
+
+
+						*.pkl 
+						
+						
+						Package the artifacts along with its dependencies 
+						
+						
+						- Container Image(Package)
+						
+							Create Container Image(Application,dependencies) --> my_mdl:v1.0
+							
+							
+						- Publish the Container to Container Registry(DockerHub)
+						
+						
+						- Deploy the Container Images to the Target Enviroments using Kubernetes
+						
+					-> Test --> Pull my_mdl:v1.0 Image from DockerHub and Execute as Container
+					
+					-> Prod --> Pull my_mdl:v1.0 Image from DockerHub and Execute as Container	
+
+
+	- Setup the Container Engine :::
+	
+		- Create DockerHub :::
+		
+		- Install Docker Engine on Build Environment :::
+		
+		
+		Terminologies ::
+		
+			- Container Engine: 	- It is a Tool to Manage the Container Images and Containers
+									- Eg.: Docker Container Engine.
+									
+			- Image					- Is a static file,which defines the properties of the application to create container
+									- Non-Executable 
+									- Images are create using the Dockerfile Instructions based of incremental layers.
+			
+			- Container				- Executable units of Container image.
+			
+			- Container Registry	- Used to maintain/version control the container images
+									- DockerHub 
+									
+									
+						Eg.: github 	- To Version Control Source Codes 
+							 dockerhub 	- To Version Control container images
+							 
+			- Container Repository	- Sub-set of Container Registry
+									- Can be created based on App Teams/Enviroments 
+									
+	
+		Work with Docker :::
+		
+			- Launch EC2 Instance - Linux Ubuntu 24.04 version .
+			
+			- Login to EC2 Instance 
+			
+			- Install docker 
+			
+				- sudo -i 
+				- apt install docker.io	-y		# https://docs.docker.com/engine/install/ubuntu/
+				
+			- Use Docker CLI Commands to interact with Docker Engine to create/Manage the containers/Images.
+			 
+	- Work with Docker Cli Commands 
+	
+		--> Use Existing Image from DockerHub
+	
+			docker images 			# To get the list of images on the local machine
+
+			docker ps 				# To get the list of active containers on the local machine	
+
+			docker ps -a 			# To get the list of active & inactive containers on the local machine	
+			
+			
+			docker pull ubuntu 		# Download an Container Image from Docker Hub
+			
+				- Syntax: 	docker pull <image>:<tag/version_ID>
+							docker pull <image>							# Always refer to the latest version
+	
+	
+			docker run <image_name>	# To Create a New Container based on the Image Name.
+									# Run/Execute the Container
+			
+			
+			Modes of Execution :::
+
+				- Attached Mode / Foreground Mode 		# Default
+				
+					Eg.: docker run ubuntu sleep 5
+				
+				- Detached Mode / Background Mode 
+				
+					Eg.: docker run -d ubuntu sleep 5
+				
+				- Interactive Mode :::
+				
+					Eg.: docker run -it ubuntu bash
+				
+		
+			docker start <container_id>		# Start the Container 
+			
+			Login to running Container :
+			
+				- docker exec -it <container_id> bash 	# To Login to running container
+			
+				- exit 									# To Logoff from the running container 
+
+			docker stop <container_id>		# Stop the running Container 
+			
+		
+		Working with Web Servers with-in Docker Container.
+		
+		Docker Networking :
+		
+		Port Mapping / Port Binding :::		# To expose the container application to internet
+		
+		
+			Syntax : -p <host_port>:<container_port>
+			
+			Eg.: 
+				docker run -it -p 8080:8080 tomcat:8.0
+			
+				docker run -it -p 8089:8080 tomcat:8.0
+			
+			
+		Access the Container application using the <External_IP/Public_IP>:<host_port>
+		
+	
+		Remove Container :
+		
+			docker rm <container_id>
+		
+		Remove Image :
+		
+			docker rmi <image_id>
+			
+	
+	--> Create New Images ::::
+		
+		- Docker Commit ::	# Infra-Structure perspective
+		
+			- It used to create a new Container Image based on the existing Container reference
+			
+			Syntax: 
+			
+				docker commit <container_id> <DockerHub_Repository_Name>/<New_Container_Image>:<tag/version_ID>
+			Eg.: 
+				
+				docker commit 922ee3d65714 loksaieta/tempimg:v1.0
+				
+		
+		
+		
+		
+		- Docker Build ::	# Development/Deployment Process 
+		
+			- It used to create a new Container Image based on the Dockerfile reference
+			- Dockerfile composed of Dockerfile Instructions 
+		
+		
+			
+		vi Dockerfile 
+		
+		FROM ubuntu
+		RUN apt update -y 
+		RUN apt install git -y 
+		
+			- 
+
+			Syntax: 
+			
+				docker build -t <DockerHub_Repository_Name>/<New_Container_Image>:<tag/version_ID> .		# '.' denotes Dockerfile reference
+			Eg.: 
+				
+				docker build -t loksaieta/dummyimg .			
+			
+									
+		
+		- Publish the Container to Container Registry(DockerHub) :::
+			
+			- Login to Container Registry using Docker CLI Commands 
+			
+				- DockerHUB Login_ID
+				
+					docker login -u loksaieta
+				
+				- PAT - (Password)
+				
+					kjlkjlkjlklk
+					
+					
+					
+			- Push the Container Image to DockerHub :
+			
+				docker push <DockerHub_Repository_Name>/<New_Container_Image>:<tag/version_ID>
+		
+				Eg.: 
+				
+					docker push loksaieta/tempimg:v1.0
+		
+Next:
+
+	MLOPs Workflow :::
+	
+					
+		- Dev: With the Project Source Code 		- DVC, MLFLOW, Test Application - Fast-API, Streamlit web ui.
+			
+		
+		- Build: using Docker 
+		
+		- Deployment: Using Kubernetes
+									
+		
+
+		
+			
+#######################
+Day 8 | 26th Sep. 2026
+#######################	
+	
+	MLOPs Workflow :::
+	
+		- Dev: With the Project Source Code 		- DVC, MLFLOW, Test Application - Fast-API, Streamlit web ui.			
+		
+		- Build: using Docker 
+		
+		- Deployment: Using Kubernetes	
+
+
+	Phase 1:
+	
+	1. DVC is used to manage the Input Dataset for Model Training 
+	
+	2. dvc repro 		# Reproduce  ==> Train the Model # Trigger DVC Pipeline --> Data Validation - Process Data - Train 
+						# dvc.yaml
+						# dvc repro command is used to execute dvc pipeline
+
+	3. Trained Model ==> ML Artifacts ==> model.joblib / pickle 
+	
+	4. Used DVC to maintain the Artifacts - S3 
+
+
+	Phase 2:
+	
+	5. Use that artifacts and dependencies to create Dockerfile and create Docker Image 
+	
+	6. Publish Docker Image to Container Registry
+	
+	7. Deploy to Kubernetes 
+	
+	
+	Phase 3:
+	
+	8. Automate Build and Deployment to Kubernetes using github-actions workflow--> CI/CD Pipeline
+	
+	9. Monitor using Kubeflow(Deployment & Monitor) MLFlow / Prometheus / Grafana 
+	
+	
+
+
+Working with DVC ::::
+
+	--> EC2 Service				# Create Virtual Machines(Dev,Build,Test,Production Environments)	:::	
+
+			--> EC2 Instance	# To Setup Build Environment 
+								# Create an EC2 Instance with IAM Role attached.
+								# Setup Security Group - Inbound Rules. 
+								# Setup MobaXTerm/Putty on Local Machine to access s3 bucket and EC2 Instances 												
+			--> Access EC2 Instance :
+
+								- Using MobaXTerm/Putty (Windows User)
+								- Use Terminal 			(Windows/Mac/Linix User)
+								
+								
+
+	--> Install MLOps related tools :::
+
+			git 
+			docker 
+			python 
+			create virtual environment using python 
+				- DVC  
+				- Streamlit						# Tool To creat UI for for ML Model 
+				- Fast-API 						# Tool To creat API for for ML Model 
+			
+
+			# install git,python,docker	on VM Level 
+			
+				sudo apt install -y \
+					  python3.12 python3.12-venv python3-pip
+
+				Create Virtual Environment ::::
+				
+						python3.12 -m venv loksai-venv
+
+						source loksai-venv/bin/activate
+
+					  
+				sudo apt install docker.io -y
+				
+				
+	- Environment:
+	
+		Dev 			--> 	Owned by the Developers 
+		
+								- Create ML Model Web Interface using Streamlit 
+								
+								- Create ML Model API using Fast-API
+			
+		
+		Build 			--> 	Owned by the DevOps/MLOps Team 
+		
+		Target Environments :
+		
+			- Test 				# Deploy the Package(Docker Image) & Execute 	
+		
+			- Prod 
+
+
+	- Core components of ML Project:
+	
+		- API 										# Backend - fast-api
+		
+		- UI 										# Web UI - streamlit
+		
+		- SRC -> Data_validation, Pre-Processing, Training
+	
+		- dvc .yaml
+		
+		- docker ***
+		
+		- K8s ***
+		
+		- github-workflow ****
+		
+		- requirement.txt
+		
+		
+	- DockerHub Account: https://hub.docker.com/
+	
+Working with MLOps - Build Enviroment:
+
+	- Launch an EC2 Instance - Ubuntu AMI v24.04 (++ IAM Role, 30GB)
+	
+	- Update the Security Group - Allow all/required ports.
+	
+
+				--> Login to EC2 Instance :
+				
+					$ sudo -i 
+					
+					$ apt update -y
+					
+					
+					# Setup AWS Cli on the EC2 Instance 		# Used to access S3 Bucket 
+						
+
+						# To Setup AWS CLI ::::
+
+
+						sudo apt install -y unzip curl
+
+						#Download AWS CLI v2
+						curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+						#Unzip installer
+						unzip awscliv2.zip
+
+						#Install AWS CLI
+						sudo ./aws/install
+
+						#Verify Installation
+						aws --version
+
+					$ aws s3 ls 					# Get the list of s3 bucket - to quickly check for s3 access from EC2 Instance.
+
+
+						
+					# install git,python,docker	on VM Level 
+					
+						sudo apt install -y \
+							  python3.12 python3.12-venv python3-pip
+							  
+					# sudo apt install docker.io -y
+
+
+Build Server :::
+
+- Create Python Virtual Environment to work with MLOps Tools
+
+python3.12 -m venv loksai_env
+
+source loksai_env/bin/activate
+		
+<Download project to build environment>			# Git clone 
+
+cd <project_Folder>
+
+mkdir data 
+cd data 
+mkdir processed 
+mkdir raw
+
+cd ..
+
+mkdir models 
+
+# install dvc Package within the Venv.
+
+pip install dvc_s3									# Install DVC-s3 
+
+dvc --version
+
+pip install -r requirements.txt
+			
+git init 							# Not required if you already cloned the Repo.
+
+dvc init 							# Initialize DVC Repo & Create *dvcignore,config files add to git staging area
+
+dvc remote add -d myremote s3://loksai-edu-mlproject1
+
+git add .dvc/config
+
+git commit -m "Configure DVC S3 remote"
+
+	
+vi data/raw/reviews.csv				# Add sample Records as shown below						# Experiment Iteration can Start from here!	
+
+dvc add data/raw/reviews.csv		# Add data/raw/reviews.csv to git after every dvc add
+
+git add data/raw/reviews.csv.dvc data/raw/.gitignore
+
+git commit -m "Added DVC Data-v1"
+
+dvc repro							# To Execute DVC Pipeline
+
+git add data/processed/.gitignore models/.gitignore dvc.lock			# Add dvc.lock to git after every dvc repro
+
+git commit -m "repro-Processed data-v1"
+
+dvc push 							# Push repro-Processed data 
+
+dvc status							# Status should be: Data and pipelines are up to date.
+
+dvc pull							# Pull the latest changes from Remote S3 Bucket
+			
+
+
+Experimentation ::::
+
+Start MLflow UI (ONLY correct command)
+mlflow ui --host 0.0.0.0 --port 5000 --allowed-hosts '*'
+
+Open in browser
+http://<EC2_PUBLIC_IP>:5000
+
+13.234.59.99:5000
+
+
+### OPTIONAL: MODEL VALIDATION
+Run API locally
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+Open in browser
+http://<EC2_PUBLIC_IP>:8000
+
+13.234.59.99:8000
+http://13.234.59.99:8000/docs
+
+### Run Streamlit
+streamlit run ui/app.py --server.address 0.0.0.0			### Confirm predictions change with new data.
+
+Open in browser
+http://<EC2_PUBLIC_IP>:8501
+
+13.234.59.99:8501
+
+#************************************************************************************************************
+
+# Create data/raw/review.csv 
+
+
+review_text,sentiment
+I love this product it works perfectly,positive
+Absolutely fantastic quality and service,positive
+Very happy with the purchase,positive
+Great experience would buy again,positive
+Excellent product highly recommended,positive
+Amazing performance and value,positive
+Satisfied with quality and delivery,positive
+Works exactly as advertised,positive
+Customer support was very helpful,positive
+This is the best purchase I have made,positive
+
+This product is okay not great not bad,neutral
+Average quality nothing special,neutral
+It works but has some issues,neutral
+Neither good nor bad experience,neutral
+Product meets basic expectations,neutral
+Decent but could be improved,neutral
+Acceptable quality for the price,neutral
+Nothing impressive but usable,neutral
+Fine for occasional use,neutral
+Okayish experience overall,neutral
+
+Worst product I have ever bought,negative
+Very disappointed with the quality,negative
+Terrible experience waste of money,negative
+Does not work as expected at all,negative
+Extremely poor build quality,negative
+Bad experience will not recommend,negative
+Product stopped working in two days,negative
+Customer service was terrible,negative
+Totally useless and overpriced,negative
+Highly dissatisfied with this product,negative
+
+I am happy with the fast delivery,positive
+Packaging was good and product works well,positive
+Average packaging but product is decent,neutral
+Late delivery and damaged box,negative
+The item arrived broken,negative
+Very smooth and reliable performance,positive
+Not worth the price paid,negative
+Okay product but slow response,neutral
+Loved the design and usability,positive
+Disappointed with the overall experience,negative
+
+
+#***********************************************************************************************************
+			
+	
